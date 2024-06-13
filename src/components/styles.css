@@ -1,0 +1,28 @@
+.bg-recycle-green {
+    background-color: #28a745 !important; 
+  }
+
+.tbody {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+  }
+  
+ 
+  .TrashItem {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%;
+    margin-bottom: 10px; 
+  }
+  
+  
+  .TrashItem .delete-button {
+    margin-left: auto; 
+  }
+  
+  .TrashItem .edit-button {
+    margin-right: auto; 
+  }
+  
+  
