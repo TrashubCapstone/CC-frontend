@@ -3,64 +3,66 @@ import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
 const TrashForm = ({ onAdd, onEdit, editingTrash }) => {
+  const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
-  const [recycle, setRecycle] = useState(''); 
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (editingTrash) {
+      setName(editingTrash.name);
       setCategory(editingTrash.category);
       setType(editingTrash.type);
       setDescription(editingTrash.description);
-      setRecycle(editingTrash.recycle); 
+      setImage(editingTrash.image);
     }
   }, [editingTrash]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!category || !type || !description || !recycle) return;
+    if (!name || !category || !type || !description) return;
+
+    const newTrash = { id: editingTrash?.id || Date.now(), name, category, type, description, image };
 
     if (editingTrash) {
-      onEdit({ id: editingTrash.id, category, type, description, recycle });
+      onEdit(newTrash);
     } else {
-      onAdd({ category, type, description, recycle });
+      onAdd(newTrash);
     }
 
-    
+    setName('');
     setCategory('');
     setType('');
     setDescription('');
-    setRecycle('');
+    setImage(null);
 
     navigate('/trashlist'); 
   };
 
+  const handleImageChange = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
+
   return (
     <div className="mt-4">
-      <div className="card bg-light" style={{ width: '100vw', 
-        maxWidth: '800px', 
-        padding: '1.5rem', 
-        boxSizing: 'border-box', 
-        margin: 'auto',
-        fontFamily: 'Georgia'}}>
+      <div className="card bg-light" style={{ width: '100vw', maxWidth: '800px', padding: '1.5rem', boxSizing: 'border-box', margin: 'auto', fontFamily: 'Georgia'}}>
         <div className="card-body">
           <h5 className="card-title text-center mb-4">{editingTrash ? 'Perbarui Data' : 'Tambah Data Baru'}</h5>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="category" className="form-label">Kategori</label>
+              <label htmlFor="name" className="form-label">Nama Sampah</label>
               <input
-                type="text"
                 className="form-control"
-                id="category"
-                placeholder="Masukkan Kategori"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                id="name"
+                placeholder="Masukkan Nama Sampah"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="type" className="form-label">Jenis</label>
+              <label htmlFor="category" className="form-label">Jenis</label>
               <select
                 className="form-control"
                 id="type"
@@ -71,6 +73,19 @@ const TrashForm = ({ onAdd, onEdit, editingTrash }) => {
                 <option value="Organik">Organik</option>
                 <option value="Anorganik">Anorganik</option>
                 <option value="B3">B3</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="type" className="form-label">Kategori</label>
+              <select
+                className="form-control"
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="" disabled>Pilih Kategori</option>
+                <option value="Recycle">Recycle</option>
+                <option value="Unrecycle">Unrecycle</option>
               </select>
             </div>
             <div className="mb-3">
@@ -85,15 +100,13 @@ const TrashForm = ({ onAdd, onEdit, editingTrash }) => {
               ></textarea>
             </div>
             <div className="mb-3">
-              <label htmlFor="recycle" className="form-label">Daur Ulang</label>
-              <textarea
+              <label htmlFor="image" className="form-label">Gambar</label>
+              <input
                 className="form-control"
-                id="recycle"
-                rows="3"
-                placeholder="Cara Daur Ulang"
-                value={recycle}
-                onChange={(e) => setRecycle(e.target.value)}
-              ></textarea>
+                id="image"
+                type="file"
+                onChange={handleImageChange}
+              />
             </div>
             <button type="submit" className="btn btn-success">
               {editingTrash ? 'Update' : 'Add'}

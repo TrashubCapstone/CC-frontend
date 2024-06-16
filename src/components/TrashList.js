@@ -28,7 +28,7 @@ const TrashList = ({ trashData, onDelete, onEdit }) => {
   const filteredTrash = searchTerm.length > 0 ? searchResults : trashData;
 
   return (
-    <div className="container-fluid mt-4" style={{fontFamily: 'Georgia'}}>
+    <div className="container-fluid mt-4" style={{ fontFamily: 'Georgia' }}>
       <Navbar activeItem="dashboard" />
       <div className="d-flex justify-content-between">
         <input
@@ -44,10 +44,11 @@ const TrashList = ({ trashData, onDelete, onEdit }) => {
         <table className="table table-striped">
           <thead>
             <tr>
+              <th scope="col" className="text-center align-middle">Nama</th>
+              <th scope="col" className="text-center align-middle">Gambar</th>
               <th scope="col" className="text-center align-middle">Kategori</th>
               <th scope="col" className="text-center align-middle">Jenis</th>
               <th scope="col" className="text-center align-middle">Penjelasan</th>
-              <th scope="col" className="text-center align-middle">Cara Daur Ulang</th>
               <th scope="col" className="text-center align-middle">Aksi</th>
             </tr>
           </thead>
